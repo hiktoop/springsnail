@@ -112,9 +112,12 @@ conn* mgr::pick_conn( int cltfd  )
     }
     m_conns.erase( iter );
     // 在 used 里添加 ctlfd 和 sevfd
+    // 和客户端的连接是在进程池里创建的，服务器的连接是 mgr 初始化的时候创建的
+    // 但是为什么两者都要放到 m_used 里面？
     m_used.insert( pair< int, conn* >( cltfd, tmp ) ); // 传入的客户端 fd
     m_used.insert( pair< int, conn* >( srvfd, tmp ) ); // 之前在 conn 中的信息
     // 添加到 epoll 中
+    // run_child 中只将信号和父进程管道加入了 epoll，此处再加入服务端和客户端的 socket
     add_read_fd( m_epollfd, cltfd );
     add_read_fd( m_epollfd, srvfd );
     log( LOG_INFO, __FILE__, __LINE__, "bind client sock %d with server sock %d", cltfd, srvfd );

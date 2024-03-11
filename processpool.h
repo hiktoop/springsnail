@@ -216,7 +216,7 @@ void processpool< C, H, M >::run_child( const vector<H>& arg )
     setup_sig_pipe();
 
     int pipefd_read = m_sub_process[m_idx].m_pipefd[ 1 ];
-    add_read_fd( m_epollfd, pipefd_read ); // 子线程的读管道
+    add_read_fd( m_epollfd, pipefd_read ); // 父线程的读管道
 
     epoll_event events[ MAX_EVENT_NUMBER ];
 
@@ -272,7 +272,7 @@ void processpool< C, H, M >::run_child( const vector<H>& arg )
                         continue;
                     }
                     conn->init_clt( connfd, client_address );
-                    notify_parent_busy_ratio( pipefd_read, manager );
+                    notify_parent_busy_ratio( pipefd_read, manager ); // 通知父进程修改当前子进程的 busy_ratio
                 }
             }
             else if( ( sockfd == sig_pipefd[0] ) && ( events[i].events & EPOLLIN ) ) // 信号
@@ -314,7 +314,8 @@ void processpool< C, H, M >::run_child( const vector<H>& arg )
                     }
                 }
             }
-            else if( events[i].events & EPOLLIN ) // 管理者发来的什么？
+            // 处理服务端或客户端的读写
+            else if( events[i].events & EPOLLIN ) // read
             {
                  RET_CODE result = manager->process( sockfd, READ );
                  switch( result )
@@ -328,7 +329,7 @@ void processpool< C, H, M >::run_child( const vector<H>& arg )
                          break;
                  }
             }
-            else if( events[i].events & EPOLLOUT )
+            else if( events[i].events & EPOLLOUT ) // write
             {
                  RET_CODE result = manager->process( sockfd, WRITE );
                  switch( result )
@@ -349,6 +350,7 @@ void processpool< C, H, M >::run_child( const vector<H>& arg )
         }
     }
 
+    // 子进程终止
     close( pipefd_read );
     close( m_epollfd );
 }
