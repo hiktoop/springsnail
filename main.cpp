@@ -31,30 +31,30 @@ static void usage( const char* prog )
 
 int main( int argc, char* argv[] )
 {
-    char cfg_file[1024];
+    char cfg_file[1024]; // configuration
     memset( cfg_file, '\0', 100 );
     int option;
-    // 命令参数处理设置
+    // 命令参数处理设置，可以作为模板
     while ( ( option = getopt( argc, argv, "f:xvh" ) ) != -1 )
     {
         switch ( option )
         {
-            case 'x':
+            case 'x': // 设置 DEBUG 级别
             {
                 set_loglevel( LOG_DEBUG );
                 break;
             }
-            case 'v':
+            case 'v': // 输出版本
             {
                 log( LOG_INFO, __FILE__, __LINE__, "%s %s", argv[0], version );
                 return 0;
             }
-            case 'h':
+            case 'h': // 
             {
                 usage( basename( argv[ 0 ] ) );
                 return 0;
             }
-            case 'f':
+            case 'f': // 使用配置文件
             {
                 memcpy( cfg_file, optarg, strlen( optarg ) );
                 break;
@@ -86,7 +86,7 @@ int main( int argc, char* argv[] )
         log( LOG_ERR, __FILE__, __LINE__, "read config file met error: %s", strerror( errno ) );
         return 1;
     }
-    char* buf = new char [ret_stat.st_size + 1];
+    char* buf = new char [ret_stat.st_size + 1]; // new way to new char
     memset( buf, '\0', ret_stat.st_size + 1 );
     /* 把配置文件读入buf中 */
     ssize_t read_sz = read( cfg_fd, buf, ret_stat.st_size );
@@ -96,7 +96,7 @@ int main( int argc, char* argv[] )
         return 1;
     }
     vector< host > balance_srv;     // 本机地址
-    vector< host > logical_srv;     // 实际的要负载均衡的主机地址
+    vector< host > logical_srv;     // 实际的要负载均衡的主机地址，每个主机地址对应一个工作进程
     host tmp_host;
     memset( tmp_host.m_hostname, '\0', 1024 );
     char* tmp_hostname;
@@ -217,6 +217,7 @@ int main( int argc, char* argv[] )
     //memcpy( cfg_host.m_hostname, "127.0.0.1", strlen( "127.0.0.1" ) );
     //cfg_host.m_port = 54321;
     //cfg_host.m_conncnt = 5;
+    // 创建、运行线程池
     processpool< conn, host, mgr >* pool = processpool< conn, host, mgr >::create( listenfd, logical_srv.size() );
     if( pool )
     {

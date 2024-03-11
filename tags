@@ -1,0 +1,124 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/home/whisper/codes/springsnail/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	//
+BUFFER_EMPTY	fdwrapper.h	/^enum RET_CODE { OK = 0, NOTHING = 1, IOERR = -1, CLOSED = -2, BUFFER_FULL = -3, BUFFER_EMPTY = -/;"	e	enum:RET_CODE
+BUFFER_FULL	fdwrapper.h	/^enum RET_CODE { OK = 0, NOTHING = 1, IOERR = -1, CLOSED = -2, BUFFER_FULL = -3, BUFFER_EMPTY = -/;"	e	enum:RET_CODE
+BUF_SIZE	conn.h	/^    static const int BUF_SIZE = 2048;$/;"	m	class:conn	typeref:typename:const int
+CLOSED	fdwrapper.h	/^enum RET_CODE { OK = 0, NOTHING = 1, IOERR = -1, CLOSED = -2, BUFFER_FULL = -3, BUFFER_EMPTY = -/;"	e	enum:RET_CODE
+CONN_H	conn.h	/^#define CONN_H$/;"	d
+EPOLL_WAIT_TIME	processpool.h	/^static int EPOLL_WAIT_TIME = 5000;$/;"	v	typeref:typename:int
+ERROR	fdwrapper.h	/^enum OP_TYPE { READ = 0, WRITE, ERROR };$/;"	e	enum:OP_TYPE
+FDWRAPPER_H	fdwrapper.cpp	/^#define FDWRAPPER_H$/;"	d	file:
+FDWRAPPER_H	fdwrapper.h	/^#define FDWRAPPER_H$/;"	d
+IOERR	fdwrapper.h	/^enum RET_CODE { OK = 0, NOTHING = 1, IOERR = -1, CLOSED = -2, BUFFER_FULL = -3, BUFFER_EMPTY = -/;"	e	enum:RET_CODE
+LOG_BUFFER_SIZE	log.cpp	/^static int LOG_BUFFER_SIZE = 2048; \/\/ log 缓存大小$/;"	v	typeref:typename:int	file:
+LOG_H	log.h	/^#define LOG_H$/;"	d
+MAX_EVENT_NUMBER	processpool.h	/^    static const int MAX_EVENT_NUMBER = 10000;$/;"	m	class:processpool	typeref:typename:const int
+MAX_PROCESS_NUMBER	processpool.h	/^    static const int MAX_PROCESS_NUMBER = 16;$/;"	m	class:processpool	typeref:typename:const int
+NOTHING	fdwrapper.h	/^enum RET_CODE { OK = 0, NOTHING = 1, IOERR = -1, CLOSED = -2, BUFFER_FULL = -3, BUFFER_EMPTY = -/;"	e	enum:RET_CODE
+OK	fdwrapper.h	/^enum RET_CODE { OK = 0, NOTHING = 1, IOERR = -1, CLOSED = -2, BUFFER_FULL = -3, BUFFER_EMPTY = -/;"	e	enum:RET_CODE
+OP_TYPE	fdwrapper.h	/^enum OP_TYPE { READ = 0, WRITE, ERROR };$/;"	g
+PROCESSPOOL_H	processpool.h	/^#define PROCESSPOOL_H$/;"	d
+READ	fdwrapper.h	/^enum OP_TYPE { READ = 0, WRITE, ERROR };$/;"	e	enum:OP_TYPE
+RET_CODE	fdwrapper.h	/^enum RET_CODE { OK = 0, NOTHING = 1, IOERR = -1, CLOSED = -2, BUFFER_FULL = -3, BUFFER_EMPTY = -/;"	g
+SRVMGR_H	mgr.h	/^#define SRVMGR_H$/;"	d
+TRY_AGAIN	fdwrapper.h	/^enum RET_CODE { OK = 0, NOTHING = 1, IOERR = -1, CLOSED = -2, BUFFER_FULL = -3, BUFFER_EMPTY = -/;"	e	enum:RET_CODE
+USER_PER_PROCESS	processpool.h	/^    static const int USER_PER_PROCESS = 65536;$/;"	m	class:processpool	typeref:typename:const int
+WRITE	fdwrapper.h	/^enum OP_TYPE { READ = 0, WRITE, ERROR };$/;"	e	enum:OP_TYPE
+add_read_fd	fdwrapper.cpp	/^void add_read_fd( int epollfd, int fd )$/;"	f	typeref:typename:void
+add_write_fd	fdwrapper.cpp	/^void add_write_fd( int epollfd, int fd )$/;"	f	typeref:typename:void
+addsig	processpool.h	/^static void addsig( int sig, void( handler )(int), bool restart = true )$/;"	f	typeref:typename:void
+all	Makefile	/^all: log.o fdwrapper.o conn.o mgr.o springsnail$/;"	t
+clean	Makefile	/^clean:$/;"	t
+closefd	fdwrapper.cpp	/^void closefd( int epollfd, int fd )$/;"	f	typeref:typename:void
+conn	conn.cpp	/^conn::conn()$/;"	f	class:conn
+conn	conn.h	/^class conn$/;"	c
+conn.o	Makefile	/^conn.o: conn.cpp conn.h$/;"	t
+conn2srv	mgr.cpp	/^int mgr::conn2srv( const sockaddr_in& address )$/;"	f	class:mgr	typeref:typename:int
+create	processpool.h	/^    static processpool< C, H, M >* create( int listenfd, int process_number = 8 )$/;"	f	class:processpool	typeref:typename:processpool<C,H,M> *
+fdwrapper.o	Makefile	/^fdwrapper.o: fdwrapper.cpp fdwrapper.h$/;"	t
+free_conn	mgr.cpp	/^void mgr::free_conn( conn* connection )$/;"	f	class:mgr	typeref:typename:void
+get_most_free_srv	processpool.h	/^int processpool< C, H, M >::get_most_free_srv()$/;"	f	class:processpool	typeref:typename:int
+get_used_conn_cnt	mgr.cpp	/^int mgr::get_used_conn_cnt()$/;"	f	class:mgr	typeref:typename:int
+host	mgr.h	/^class host$/;"	c
+init_clt	conn.cpp	/^void conn::init_clt( int sockfd, const sockaddr_in& client_addr )$/;"	f	class:conn	typeref:typename:void
+init_srv	conn.cpp	/^void conn::init_srv( int sockfd, const sockaddr_in& server_addr )$/;"	f	class:conn	typeref:typename:void
+level	log.cpp	/^static int level = LOG_INFO; \/\/ log 默认是 info 级别的$/;"	v	typeref:typename:int	file:
+log	log.cpp	/^void log( int log_level,  const char* file_name, int line_num, const char* format, ... )$/;"	f	typeref:typename:void
+log.o	Makefile	/^log.o: log.cpp log.h$/;"	t
+loglevels	log.cpp	/^static const char* loglevels[] =$/;"	v	typeref:typename:const char * []	file:
+m_busy_ratio	processpool.h	/^    int m_busy_ratio;$/;"	m	class:process	typeref:typename:int
+m_clt_address	conn.h	/^    sockaddr_in m_clt_address;$/;"	m	class:conn	typeref:typename:sockaddr_in
+m_clt_buf	conn.h	/^    char* m_clt_buf;$/;"	m	class:conn	typeref:typename:char *
+m_clt_read_idx	conn.h	/^    int m_clt_read_idx;$/;"	m	class:conn	typeref:typename:int
+m_clt_write_idx	conn.h	/^    int m_clt_write_idx;$/;"	m	class:conn	typeref:typename:int
+m_cltfd	conn.h	/^    int m_cltfd;$/;"	m	class:conn	typeref:typename:int
+m_conncnt	mgr.h	/^    int m_conncnt;$/;"	m	class:host	typeref:typename:int
+m_conns	mgr.h	/^    map< int, conn* > m_conns;$/;"	m	class:mgr	typeref:typename:map<int,conn * >
+m_epollfd	mgr.cpp	/^int mgr::m_epollfd = -1;$/;"	m	class:mgr	typeref:typename:int
+m_epollfd	mgr.h	/^    static int m_epollfd;$/;"	m	class:mgr	typeref:typename:int
+m_epollfd	processpool.h	/^    int m_epollfd;$/;"	m	class:processpool	typeref:typename:int
+m_freed	mgr.h	/^    map< int, conn* > m_freed;$/;"	m	class:mgr	typeref:typename:map<int,conn * >
+m_hostname	mgr.h	/^    char m_hostname[1024];$/;"	m	class:host	typeref:typename:char[1024]
+m_idx	processpool.h	/^    int m_idx;$/;"	m	class:processpool	typeref:typename:int
+m_instance	processpool.h	/^    static processpool< C, H, M >* m_instance;$/;"	m	class:processpool	typeref:typename:processpool<C,H,M> *
+m_instance	processpool.h	/^processpool< C, H, M >* processpool< C, H, M >::m_instance = NULL;$/;"	m	class:processpool< C, H, M >	typeref:typename:processpool<C,H,M> *
+m_listenfd	processpool.h	/^    int m_listenfd;$/;"	m	class:processpool	typeref:typename:int
+m_logic_srv	mgr.h	/^    host m_logic_srv;$/;"	m	class:mgr	typeref:typename:host
+m_pid	processpool.h	/^    pid_t m_pid;$/;"	m	class:process	typeref:typename:pid_t
+m_pipefd	processpool.h	/^    int m_pipefd[2];$/;"	m	class:process	typeref:typename:int[2]
+m_port	mgr.h	/^    int m_port;$/;"	m	class:host	typeref:typename:int
+m_process_number	processpool.h	/^    int m_process_number;$/;"	m	class:processpool	typeref:typename:int
+m_srv_address	conn.h	/^    sockaddr_in m_srv_address;$/;"	m	class:conn	typeref:typename:sockaddr_in
+m_srv_buf	conn.h	/^    char* m_srv_buf;$/;"	m	class:conn	typeref:typename:char *
+m_srv_closed	conn.h	/^    bool m_srv_closed;$/;"	m	class:conn	typeref:typename:bool
+m_srv_read_idx	conn.h	/^    int m_srv_read_idx;$/;"	m	class:conn	typeref:typename:int
+m_srv_write_idx	conn.h	/^    int m_srv_write_idx;$/;"	m	class:conn	typeref:typename:int
+m_srvfd	conn.h	/^    int m_srvfd;$/;"	m	class:conn	typeref:typename:int
+m_stop	processpool.h	/^    int m_stop;$/;"	m	class:processpool	typeref:typename:int
+m_sub_process	processpool.h	/^    process* m_sub_process;$/;"	m	class:processpool	typeref:typename:process *
+m_used	mgr.h	/^    map< int, conn* > m_used;$/;"	m	class:mgr	typeref:typename:map<int,conn * >
+main	main.cpp	/^int main( int argc, char* argv[] )$/;"	f	typeref:typename:int
+mgr	mgr.cpp	/^mgr::mgr( int epollfd, const host& srv ) : m_logic_srv( srv )$/;"	f	class:mgr
+mgr	mgr.h	/^class mgr$/;"	c
+mgr.o	Makefile	/^mgr.o: mgr.cpp mgr.h$/;"	t
+modfd	fdwrapper.cpp	/^void modfd( int epollfd, int fd, int ev )$/;"	f	typeref:typename:void
+notify_parent_busy_ratio	processpool.h	/^void processpool< C, H, M >::notify_parent_busy_ratio( int pipefd, M* manager )$/;"	f	class:processpool	typeref:typename:void
+pick_conn	mgr.cpp	/^conn* mgr::pick_conn( int cltfd  )$/;"	f	class:mgr	typeref:typename:conn *
+process	mgr.cpp	/^RET_CODE mgr::process( int fd, OP_TYPE type )$/;"	f	class:mgr	typeref:typename:RET_CODE
+process	processpool.h	/^    process() : m_pid( -1 ){}$/;"	f	class:process
+process	processpool.h	/^class process$/;"	c
+processpool	processpool.h	/^class processpool$/;"	c
+processpool	processpool.h	/^processpool< C, H, M >::processpool( int listenfd, int process_number )$/;"	f	class:processpool
+read_clt	conn.cpp	/^RET_CODE conn::read_clt()$/;"	f	class:conn	typeref:typename:RET_CODE
+read_srv	conn.cpp	/^RET_CODE conn::read_srv()$/;"	f	class:conn	typeref:typename:RET_CODE
+recycle_conns	mgr.cpp	/^void mgr::recycle_conns()$/;"	f	class:mgr	typeref:typename:void
+removefd	fdwrapper.cpp	/^void removefd( int epollfd, int fd )$/;"	f	typeref:typename:void
+reset	conn.cpp	/^void conn::reset()$/;"	f	class:conn	typeref:typename:void
+run	processpool.h	/^void processpool< C, H, M >::run( const vector<H>& arg )$/;"	f	class:processpool	typeref:typename:void
+run_child	processpool.h	/^void processpool< C, H, M >::run_child( const vector<H>& arg )$/;"	f	class:processpool	typeref:typename:void
+run_parent	processpool.h	/^void processpool< C, H, M >::run_parent()$/;"	f	class:processpool	typeref:typename:void
+set_loglevel	log.cpp	/^void set_loglevel( int log_level )$/;"	f	typeref:typename:void
+setnonblocking	fdwrapper.cpp	/^int setnonblocking( int fd )$/;"	f	typeref:typename:int
+setup_sig_pipe	processpool.h	/^void processpool< C, H, M >::setup_sig_pipe()$/;"	f	class:processpool	typeref:typename:void
+sig_handler	processpool.h	/^static void sig_handler( int sig )$/;"	f	typeref:typename:void
+sig_pipefd	processpool.h	/^static int sig_pipefd[2];$/;"	v	typeref:typename:int[2]
+springsnail	Makefile	/^springsnail: processpool.h main.cpp log.o fdwrapper.o conn.o mgr.o$/;"	t
+springsnail	README.md	/^# springsnail$/;"	c
+usage	main.cpp	/^static void usage( const char* prog )$/;"	f	typeref:typename:void	file:
+version	main.cpp	/^static const char* version = "1.0";$/;"	v	typeref:typename:const char *	file:
+write_clt	conn.cpp	/^RET_CODE conn::write_clt()$/;"	f	class:conn	typeref:typename:RET_CODE
+write_srv	conn.cpp	/^RET_CODE conn::write_srv()$/;"	f	class:conn	typeref:typename:RET_CODE
+~conn	conn.cpp	/^conn::~conn()$/;"	f	class:conn
+~mgr	mgr.cpp	/^mgr::~mgr()$/;"	f	class:mgr
+~processpool	processpool.h	/^    ~processpool()$/;"	f	class:processpool
+各个文件的作用	README.md	/^## 各个文件的作用$/;"	s	chapter:springsnail
+安装及使用	README.md	/^## 安装及使用$/;"	s	chapter:springsnail

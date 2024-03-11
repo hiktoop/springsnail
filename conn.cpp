@@ -5,6 +5,7 @@
 #include "log.h"
 #include "fdwrapper.h"
 
+// 初始化 clt_buf 和 srv_buf
 conn::conn()
 {
     m_srvfd = -1;
@@ -39,6 +40,7 @@ void conn::init_srv( int sockfd, const sockaddr_in& server_addr )
     m_srv_address = server_addr;
 }
 
+// 将变量初始化
 void conn::reset()
 {
     m_clt_read_idx = 0;
@@ -51,6 +53,7 @@ void conn::reset()
     memset( m_srv_buf, '\0', BUF_SIZE );
 }
 
+// read what
 RET_CODE conn::read_clt()
 {
     int bytes_read = 0;

@@ -84,7 +84,7 @@ X-From-Src: 218.17.40.86
     3. 解析配置文件
     4. 开始线程池的循环
 
-2. processpool: 线程池，是整个项目的发动机
+2. processpool: 进程池，是整个项目的发动机
 3. fdwrapper：操作fd的包裹函数
 4. log：日志
 5. conn：客户端

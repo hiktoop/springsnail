@@ -20,7 +20,9 @@
 
 using std::pair;
 
-int mgr::m_epollfd = -1;
+int mgr::m_epollfd = -1; // peollfd 开始没有
+ 
+// connect to server
 int mgr::conn2srv( const sockaddr_in& address )
 {
     int sockfd = socket( PF_INET, SOCK_STREAM, 0 );
@@ -38,21 +40,25 @@ int mgr::conn2srv( const sockaddr_in& address )
     return sockfd;
 }
 
+// set epollfd and host server
 mgr::mgr( int epollfd, const host& srv ) : m_logic_srv( srv )
 {
     m_epollfd = epollfd;
+
+    // 初始配置
     int ret = 0;
     struct sockaddr_in address;
     bzero( &address, sizeof( address ) );
-    address.sin_family = AF_INET;
+    address.sin_family = AF_INET; // ipv4
     inet_pton( AF_INET, srv.m_hostname, &address.sin_addr );
-    address.sin_port = htons( srv.m_port );
+    address.sin_port = htons( srv.m_port ); // host to net short
     log( LOG_INFO, __FILE__, __LINE__, "logcial srv host info: (%s, %d)", srv.m_hostname, srv.m_port );
 
+    // 创建多个连接并加入到连接表中
     for( int i = 0; i < srv.m_conncnt; ++i )
     {
-        sleep( 1 );
-        int sockfd = conn2srv( address );
+        sleep( 1 ); // ?/?
+        int sockfd = conn2srv( address ); // 建立连接返回 fd
         if( sockfd < 0 )
         {
             log( LOG_ERR, __FILE__, __LINE__, "build connection %d failed", i );
@@ -65,13 +71,13 @@ mgr::mgr( int epollfd, const host& srv ) : m_logic_srv( srv )
             {
                 tmp = new conn;
             }
-            catch( ... )
+            catch( ... ) // 创建连接失败时关闭 sockfd
             {
                 close( sockfd );
                 continue;
             }
-            tmp->init_srv( sockfd, address );
-            m_conns.insert( pair< int, conn* >( sockfd, tmp ) );
+            tmp->init_srv( sockfd, address ); // 只初始化服务端
+            m_conns.insert( pair< int, conn* >( sockfd, tmp ) ); // 将连接加入连接表(map)
         }
     }
 }
@@ -80,19 +86,22 @@ mgr::~mgr()
 {
 }
 
+// get used connections cnt
 int mgr::get_used_conn_cnt()
 {
     return m_used.size();
 }
 
+// pick connections
 conn* mgr::pick_conn( int cltfd  )
 {
-    if( m_conns.empty() )
+    if( m_conns.empty() ) // 没有连接
     {
         log( LOG_ERR, __FILE__, __LINE__, "%s", "not enough srv connections to server" );
         return NULL;
     }
 
+    // 在连接表头部获得一个连接
     map< int, conn* >::iterator iter =  m_conns.begin();
     int srvfd = iter->first;
     conn* tmp = iter->second;
@@ -102,40 +111,50 @@ conn* mgr::pick_conn( int cltfd  )
         return NULL;
     }
     m_conns.erase( iter );
-    m_used.insert( pair< int, conn* >( cltfd, tmp ) );
-    m_used.insert( pair< int, conn* >( srvfd, tmp ) );
+    // 在 used 里添加 ctlfd 和 sevfd
+    m_used.insert( pair< int, conn* >( cltfd, tmp ) ); // 传入的客户端 fd
+    m_used.insert( pair< int, conn* >( srvfd, tmp ) ); // 之前在 conn 中的信息
+    // 添加到 epoll 中
     add_read_fd( m_epollfd, cltfd );
     add_read_fd( m_epollfd, srvfd );
     log( LOG_INFO, __FILE__, __LINE__, "bind client sock %d with server sock %d", cltfd, srvfd );
-    return tmp;
+    return tmp; // 返回连接
 }
 
+// free connection
 void mgr::free_conn( conn* connection )
 {
     int cltfd = connection->m_cltfd;
     int srvfd = connection->m_srvfd;
+    // 关闭带有 epoll 任务的 fd
     closefd( m_epollfd, cltfd );
     closefd( m_epollfd, srvfd );
     m_used.erase( cltfd );
+    // 从使用表中移除
     m_used.erase( srvfd );
     connection->reset();
+    // 记录移除的连接
     m_freed.insert( pair< int, conn* >( srvfd, connection ) );
 }
 
+// recycle connection
 void mgr::recycle_conns()
 {
     if( m_freed.empty() )
     {
         return;
     }
+    // assert(!m_freed.empty())
+    // 将 freed 表中的所有 conn 重新插入到 connection 表中
     for( map< int, conn* >::iterator iter = m_freed.begin(); iter != m_freed.end(); iter++ )
     {
         sleep( 1 );
         int srvfd = iter->first;
         conn* tmp = iter->second;
-        srvfd = conn2srv( tmp->m_srv_address );
+        srvfd = conn2srv( tmp->m_srv_address ); // 循环利用的时候要重新建立连接？那岂不是和没有池的无区别？
         if( srvfd < 0 )
         {
+            // 怎么变成 srvfd < 0 的？
             log( LOG_ERR, __FILE__, __LINE__, "%s", "fix connection failed");
         }
         else
@@ -148,19 +167,20 @@ void mgr::recycle_conns()
     m_freed.clear();
 }
 
-RET_CODE mgr::process( int fd, OP_TYPE type )
+// process
+RET_CODE mgr::process( int fd, OP_TYPE type ) // OP_TYPE can be read, write and error
 {
-    conn* connection = m_used[ fd ];
+    conn* connection = m_used[ fd ]; // 获取传入 fd 的连接
     if( !connection )
     {
         return NOTHING;
     }
-    if( connection->m_cltfd == fd )
+    if( connection->m_cltfd == fd ) // 处理客户端
     {
         int srvfd = connection->m_srvfd;
         switch( type )
         {
-            case READ:
+            case READ: // 读
             {
                 RET_CODE res = connection->read_clt();
                 switch( res )
@@ -169,13 +189,13 @@ RET_CODE mgr::process( int fd, OP_TYPE type )
                     {
                         log( LOG_DEBUG, __FILE__, __LINE__, "content read from client: %s", connection->m_clt_buf );
                     }
-                    case BUFFER_FULL:
+                    case BUFFER_FULL: // 缓冲区满了，开始写
                     {
                         modfd( m_epollfd, srvfd, EPOLLOUT );
                         break;
                     }
-                    case IOERR:
-                    case CLOSED:
+                    case IOERR: // io 错误
+                    case CLOSED: // 已关闭
                     {
                         free_conn( connection );
                         return CLOSED;
@@ -183,24 +203,24 @@ RET_CODE mgr::process( int fd, OP_TYPE type )
                     default:
                         break;
                 }
-                if( connection->m_srv_closed )
+                if( connection->m_srv_closed ) // 服务器端关闭
                 {
                     free_conn( connection );
                     return CLOSED;
                 }
                 break;
             }
-            case WRITE:
+            case WRITE: // 写
             {
                 RET_CODE res = connection->write_clt();
                 switch( res )
                 {
-                    case TRY_AGAIN:
+                    case TRY_AGAIN: // try again
                     {
                         modfd( m_epollfd, fd, EPOLLOUT );
                         break;
                     }
-                    case BUFFER_EMPTY:
+                    case BUFFER_EMPTY: // 缓冲区空
                     {
                         modfd( m_epollfd, srvfd, EPOLLIN );
                         modfd( m_epollfd, fd, EPOLLIN );
@@ -222,14 +242,14 @@ RET_CODE mgr::process( int fd, OP_TYPE type )
                 }
                 break;
             }
-            default:
+            default: // 其他情况尚未支持
             {
                 log( LOG_ERR, __FILE__, __LINE__, "%s", "other operation not support yet" );
                 break;
             }
         }
     }
-    else if( connection->m_srvfd == fd )
+    else if( connection->m_srvfd == fd ) // 处理服务端
     {
         int cltfd = connection->m_cltfd;
         switch( type )
@@ -305,9 +325,9 @@ RET_CODE mgr::process( int fd, OP_TYPE type )
             }
         }
     }
-    else
+    else // 既不是客户端，也不是服务端，那是啥
     {
         return NOTHING;
     }
-    return OK;
+    return OK; // 处理完毕
 }
